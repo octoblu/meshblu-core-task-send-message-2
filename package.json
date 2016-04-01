@@ -1,0 +1,48 @@
+{
+  "name": "meshblu-core-task-send-message-2",
+  "version": "1.0.0",
+  "description": "Meshblu core task meshblu-core-task-send-message-2",
+  "keywords": [
+    "meshblu",
+    "core",
+    "iot",
+    "task"
+  ],
+  "homepage": "https://github.com/octoblu/meshblu-core-task-send-message-2",
+  "bugs": "https://github.com/octoblu/meshblu-core-task-send-message-2/issues",
+  "author": {
+    "name": "Octoblu",
+    "url": "https://github.com/octoblu"
+  },
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/octoblu/meshblu-core-task-send-message-2.git"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "dependencies": {
+    "async": "^2.0.0-rc.2",
+    "coffee-script": "^1.10.0",
+    "lodash": "^4.7.0",
+    "meshblu-core-job-manager": "^3.2.0",
+    "uuid": "^2.0.1"
+  },
+  "devDependencies": {
+    "chai": "^3.4.1",
+    "coffee-coverage": "^0.7.0",
+    "fakeredis": "^1.0.2",
+    "istanbul": "^0.4.1",
+    "mocha": "^2.3.4",
+    "mocha-istanbul": "^0.2.0",
+    "sinon": "^1.17.2",
+    "sinon-chai": "^2.8.0"
+  },
+  "peerDependencies": {},
+  "engines": {
+    "node": ">=5.0.0",
+    "npm": ">=2.10.0"
+  },
+  "license": "MIT"
+}
