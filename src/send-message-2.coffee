@@ -19,25 +19,23 @@ class SendMessage2
 
     return @_sendResponse responseId, 422, callback unless devices?
 
-    if _.includes devices, '*'
-      return @_deliverBroadcastSent {message, auth, fromUuid}, (error) =>
-        return @_sendResponse responseId, (error.code || 500), callback if error?
-        @_sendResponse responseId, 204, callback
+    @_createJobs {message, auth, fromUuid, devices}, (error) =>
+      return @_sendResponse responseId, (error.code || 500), callback if error?
+      @_sendResponse responseId, 204, callback
 
-    @_deliverMessagesSent {message, auth, fromUuid, devices}, callback
 
-  _deliverMessagesSent: ({message, auth, fromUuid, devices}, callback) =>
+  _createJobs: ({message, auth, fromUuid, devices}, callback) =>
     async.eachSeries devices, (device, callback) =>
-      @_deliverMessageSent({
+      job =
         message: message
         auth: auth
         fromUuid: fromUuid
         toUuid: device
-      }, callback)
+      return @_deliverBroadcastSent(job, callback) if device == '*'
+      @_deliverMessage(job, callback)
     , callback
 
-  _deliverMessageSent: ({message, auth, fromUuid, toUuid}, callback) =>
-    console.log {message, auth, fromUuid, toUuid}
+  _deliverMessage: ({message, auth, fromUuid, toUuid}, callback) =>    
     requestSent =
       data: message
       metadata:
@@ -72,7 +70,6 @@ class SendMessage2
         responseId: uuid.v4()
 
     @jobManager.createRequest 'request', request, callback
-
 
   _sendResponse: (responseId, code, callback) =>
     callback null,

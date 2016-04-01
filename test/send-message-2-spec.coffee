@@ -113,7 +113,7 @@ describe 'SendMessage2', ->
           fromUuid: 'falcon-punch'
           toUuid: 'some-dumb-uuid'
 
-    xcontext 'when devices has a uuid and a '*' for broadcast (["*", "some-dumb-uuid"])', ->
+    context 'when devices has a uuid and a "*" for broadcast (["*", "some-dumb-uuid"])', ->
       beforeEach (done) ->
         @requestMap = {}
         request =
@@ -126,6 +126,11 @@ describe 'SendMessage2', ->
           rawData: JSON.stringify devices: ['some-dumb-uuid', '*']
 
         @sut.do request, (error, @response) => done error
+
+      beforeEach (done) ->
+        @jobManager.getRequest ['request'], (error, request) =>
+          @requestMap[request.metadata.jobType] = request
+          done error
 
       beforeEach (done) ->
         @jobManager.getRequest ['request'], (error, request) =>
@@ -150,3 +155,9 @@ describe 'SendMessage2', ->
           messageType: 'message-received'
           fromUuid: 'falcon-punch'
           toUuid: 'some-dumb-uuid'
+
+      it 'should create the right kinda DeliverBroadcastSent job', ->
+        expect(@requestMap['DeliverBroadcastSent'].metadata).to.containSubset
+          jobType: 'DeliverBroadcastSent'
+          messageType: 'broadcast-sent'
+          toUuid: 'falcon-punch'
