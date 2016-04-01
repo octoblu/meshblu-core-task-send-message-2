@@ -1,6 +1,6 @@
 {
   "name": "meshblu-core-task-send-message-2",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Meshblu core task meshblu-core-task-send-message-2",
   "keywords": [
     "meshblu",
@@ -20,7 +20,7 @@
     "url": "https://github.com/octoblu/meshblu-core-task-send-message-2.git"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "istanbul cover _mocha -- -R spec --require coffee-coverage/register-istanbul"
   },
   "dependencies": {
     "async": "^2.0.0-rc.2",
@@ -31,14 +31,15 @@
   },
   "devDependencies": {
     "@octoblu/redis-ns": "^1.2.2",
-    "chai": "^3.4.1",
+    "chai": "^3.5.0",
     "chai-subset": "^1.2.2",
     "coffee-coverage": "^0.7.0",
+    "coffee-script": "^1.10.0",
     "fakeredis": "^1.0.2",
-    "istanbul": "^0.4.1",
-    "mocha": "^2.3.4",
+    "istanbul": "^0.4.2",
+    "mocha": "^2.4.5",
     "mocha-istanbul": "^0.2.0",
-    "sinon": "^1.17.2",
+    "sinon": "^1.17.3",
     "sinon-chai": "^2.8.0"
   },
   "peerDependencies": {},
