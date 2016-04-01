@@ -30,6 +30,7 @@
     "uuid": "^2.0.1"
   },
   "devDependencies": {
+    "@octoblu/redis-ns": "^1.2.2",
     "chai": "^3.4.1",
     "coffee-coverage": "^0.7.0",
     "fakeredis": "^1.0.2",
