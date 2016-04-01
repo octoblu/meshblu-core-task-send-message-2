@@ -54,6 +54,7 @@ describe 'SendMessage2', ->
       beforeEach (done) ->
         request =
           metadata:
+            fromUuid: 'falcon-punch'
             responseId: 'response-uuid'
             auth:
               uuid:  'sender-uuid'
@@ -63,58 +64,51 @@ describe 'SendMessage2', ->
         @sut.do request, (error, @response) => done error
 
       beforeEach (done) ->
-        @jobManager.getRequest ['request'], (error, @request) =>
-          done error
+        @jobManager.getRequest ['request'], (error, @request) => done error
 
       it 'should respond with a 204', ->
         expect(@response.metadata.code).to.equal 204
 
-      it 'should create a job', ->
-        expect(@request).to.exist
+      it 'should create the right kinda DeliverBroadcastSent job', ->
+        expect(@request.metadata).to.containSubset
+          jobType: 'DeliverBroadcastSent'
+          messageType: 'broadcast-sent'
+          toUuid: 'falcon-punch'
 
-      it 'should create a job', ->
-        expect(@request.metadata.jobType).to.equal 'DeliverBroadcastSent'
-
-      xdescribe 'JobManager gets DeliverBroadcastSent job', (done) ->
-        beforeEach (done) ->
-          @jobManager.getRequest ['request'], (error, @request) =>
-            done error
-
-        it 'should be a sent messageType', ->
-          message =
-            devices: ['*']
-            fromUuid: 'sender-uuid'
-
-          auth =
-            uuid: 'sender-uuid'
-            token: 'sender-token'
-
-          {rawData, metadata} = @request
-          expect(metadata.auth).to.deep.equal auth
-          expect(metadata.jobType).to.equal 'DeliverSentMessage'
-          expect(metadata.fromUuid).to.equal 'sender-uuid'
-          expect(metadata.messageType).to.equal 'sent'
-          expect(metadata.toUuid).to.equal 'sender-uuid'
-          expect(rawData).to.equal JSON.stringify message
-
-        describe 'JobManager gets DeliverBroadcastSentMessage job', (done) ->
-          beforeEach (done) ->
-            @jobManager.getRequest ['request'], (error, @request) =>
-              done error
-
-          it 'should be a broadcast messageType', ->
-            message =
-              devices: ['*']
-              fromUuid: 'sender-uuid'
-
-            auth =
-              uuid: 'sender-uuid'
+    context 'when devices is ["some-dumb-uuid"]', ->
+      beforeEach (done) ->
+        @requestMap = {}
+        request =
+          metadata:
+            fromUuid: 'falcon-punch'
+            responseId: 'response-uuid'
+            auth:
+              uuid:  'sender-uuid'
               token: 'sender-token'
+          rawData: JSON.stringify devices: ['some-dumb-uuid']
 
-            {rawData, metadata} = @request
-            expect(metadata.auth).to.deep.equal auth
-            expect(metadata.jobType).to.equal 'DeliverBroadcastSentMessage'
-            expect(metadata.fromUuid).to.equal 'sender-uuid'
-            expect(metadata.messageType).to.equal 'broadcast'
-            expect(metadata.toUuid).to.equal 'sender-uuid'
-            expect(rawData).to.equal JSON.stringify message
+        @sut.do request, (error, @response) => done error
+
+      beforeEach (done) ->
+        @jobManager.getRequest ['request'], (error, request) =>
+          @requestMap[request.metadata.jobType] = request
+          done error
+
+      beforeEach (done) ->
+        @jobManager.getRequest ['request'], (error, request) =>
+          @requestMap[request.metadata.jobType] = request
+          done error
+
+      it 'should create the right kinda DeliverMessageSent job', ->
+        expect(@requestMap['DeliverMessageSent'].metadata).to.containSubset
+          jobType: 'DeliverMessageSent'
+          messageType: 'message-sent'
+          fromUuid: 'falcon-punch'
+          toUuid: 'some-dumb-uuid'
+
+      it 'should create the right kinda DeliverMessageReceived job', ->
+        expect(@requestMap['DeliverMessageReceived'].metadata).to.containSubset
+          jobType: 'DeliverMessageReceived'
+          messageType: 'message-received'
+          fromUuid: 'falcon-punch'
+          toUuid: 'some-dumb-uuid'

@@ -1,6 +1,6 @@
 {
   "name": "meshblu-core-task-send-message-2",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Meshblu core task meshblu-core-task-send-message-2",
   "keywords": [
     "meshblu",
@@ -32,6 +32,7 @@
   "devDependencies": {
     "@octoblu/redis-ns": "^1.2.2",
     "chai": "^3.4.1",
+    "chai-subset": "^1.2.2",
     "coffee-coverage": "^0.7.0",
     "fakeredis": "^1.0.2",
     "istanbul": "^0.4.1",
