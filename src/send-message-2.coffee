@@ -35,7 +35,7 @@ class SendMessage2
       @_deliverMessage(job, callback)
     , callback
 
-  _deliverMessage: ({message, auth, fromUuid, toUuid}, callback) =>    
+  _deliverMessage: ({message, auth, fromUuid, toUuid}, callback) =>
     requestSent =
       data: message
       metadata:
@@ -64,7 +64,7 @@ class SendMessage2
       data: message
       metadata:
         auth: auth
-        toUuid: fromUuid
+        fromUuid: fromUuid
         jobType: 'DeliverBroadcastSent'
         messageType: 'broadcast-sent'
         responseId: uuid.v4()

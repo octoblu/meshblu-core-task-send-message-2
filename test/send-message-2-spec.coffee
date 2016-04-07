@@ -73,7 +73,7 @@ describe 'SendMessage2', ->
         expect(@request.metadata).to.containSubset
           jobType: 'DeliverBroadcastSent'
           messageType: 'broadcast-sent'
-          toUuid: 'falcon-punch'
+          fromUuid: 'falcon-punch'
 
     context 'when devices is ["some-dumb-uuid"]', ->
       beforeEach (done) ->
@@ -160,4 +160,4 @@ describe 'SendMessage2', ->
         expect(@requestMap['DeliverBroadcastSent'].metadata).to.containSubset
           jobType: 'DeliverBroadcastSent'
           messageType: 'broadcast-sent'
-          toUuid: 'falcon-punch'
+          fromUuid: 'falcon-punch'
