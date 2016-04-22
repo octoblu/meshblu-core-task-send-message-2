@@ -1,7 +1,7 @@
-_ = require 'lodash'
-http = require 'http'
+_     = require 'lodash'
+http  = require 'http'
 async = require 'async'
-uuid = require 'uuid'
+uuid  = require 'uuid'
 
 class SendMessage2
   constructor: ({@cache,@datastore,@meshbluConfig,@jobManager}) ->
@@ -23,8 +23,10 @@ class SendMessage2
       return @_sendResponse responseId, (error.code || 500), callback if error?
       @_sendResponse responseId, 204, callback
 
-
   _createJobs: ({message, auth, fromUuid, devices}, callback) =>
+    if _.isString devices
+      devices = [devices]
+
     async.eachSeries devices, (device, callback) =>
       job =
         message: message
