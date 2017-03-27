@@ -27,7 +27,7 @@ class SendMessage2
     if _.isString devices
       devices = [devices]
 
-    async.eachSeries devices, (device, callback) =>
+    async.each devices, (device, callback) =>
       job =
         message: message
         auth: auth
